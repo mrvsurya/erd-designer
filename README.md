@@ -9,9 +9,11 @@ A specialized React-based tool for designing Entity Relationship Diagrams (ERDs)
 * **Dynamic Cardinality:** Support for standard ERD relationships, including **1:1**, **1:M**, **M:1**, and **M:M**.
 * **Smart Connectors:** Unit-vector-based pathing ensures connectors stay aligned even when entities are moved or tilted.
 
-### 🏢 Entity Management
+### 🏢 Entity & Canvas Management
 * **Custom Entity Nodes:** Create and label database entities with an intuitive, on-node text interface.
-* **Canvas Control:** * **Clear All:** Instantly wipe the canvas clean with a single click (includes a safety confirmation dialog).
+* **Zoom-to-Fit:** Instantly re-center and scale the canvas to view your entire diagram with a single click.
+* **Multi-Select:** Hold `Shift` and drag to select, highlight, and move groups of entities and connectors simultaneously.
+* **Clear All:** Instantly wipe the canvas clean (includes a safety confirmation dialog).
 * **Keyboard Shortcuts:**
     * `Delete` / `Backspace`: Remove selected entities or relationships.
     * `Ctrl + D` (or `Cmd + D`): Quickly duplicate selected entity nodes.
@@ -23,7 +25,7 @@ A specialized React-based tool for designing Entity Relationship Diagrams (ERDs)
 * **Professional Mode:** Automatic suppression of connection handles during save/export for a cleaner final look.
 
 ### 🛠️ User Interface
-* **Interactive Sidebar:** Dedicated toolbar for adding entities, managing files, clearing the workspace, and adjusting relationship cardinality.
+* **Interactive Sidebar:** Dedicated toolbar for adding entities, managing files, scaling the view, and adjusting relationship cardinality.
 * **Fluid Canvas:** Built on React Flow, providing a smooth panning, zooming, and drag-and-drop experience.
 
 ---
