@@ -35,9 +35,3 @@ A specialized React-based tool for designing Entity Relationship Diagrams (ERDs)
 * [html-to-image](https://www.npmjs.com/package/html-to-image) - High-quality image generation
 
 ---
-
-## 🏃 Getting Started
-
-1. **Clone the repository**
-   ```bash
-   git clone [https://github.com/YOUR_USERNAME/erd-designer.git](https://github.com/YOUR_USERNAME/erd-designer.git)
