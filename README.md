@@ -11,6 +11,7 @@ A specialized React-based tool for designing Entity Relationship Diagrams (ERDs)
 
 ### 🏢 Entity Management
 * **Custom Entity Nodes:** Create and label database entities with an intuitive, on-node text interface.
+* **Canvas Control:** * **Clear All:** Instantly wipe the canvas clean with a single click (includes a safety confirmation dialog).
 * **Keyboard Shortcuts:**
     * `Delete` / `Backspace`: Remove selected entities or relationships.
     * `Ctrl + D` (or `Cmd + D`): Quickly duplicate selected entity nodes.
@@ -22,7 +23,7 @@ A specialized React-based tool for designing Entity Relationship Diagrams (ERDs)
 * **Professional Mode:** Automatic suppression of connection handles during save/export for a cleaner final look.
 
 ### 🛠️ User Interface
-* **Interactive Sidebar:** Dedicated toolbar for adding entities, managing files, and adjusting relationship cardinality.
+* **Interactive Sidebar:** Dedicated toolbar for adding entities, managing files, clearing the workspace, and adjusting relationship cardinality.
 * **Fluid Canvas:** Built on React Flow, providing a smooth panning, zooming, and drag-and-drop experience.
 
 ---
@@ -34,3 +35,9 @@ A specialized React-based tool for designing Entity Relationship Diagrams (ERDs)
 * [html-to-image](https://www.npmjs.com/package/html-to-image) - High-quality image generation
 
 ---
+
+## 🏃 Getting Started
+
+1. **Clone the repository**
+   ```bash
+   git clone [https://github.com/YOUR_USERNAME/erd-designer.git](https://github.com/YOUR_USERNAME/erd-designer.git)
