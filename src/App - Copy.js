@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import ReactFlow, { 
   addEdge, Background, Controls, applyEdgeChanges, applyNodeChanges,
-  Handle, Position, EdgeLabelRenderer, BaseEdge, ReactFlowProvider, useReactFlow
+  Handle, Position, EdgeLabelRenderer, BaseEdge
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import { toPng } from 'html-to-image';
@@ -108,13 +108,11 @@ const CrowEdge = ({ id, sourceX, sourceY, targetX, targetY, data, selected, sour
 const nodeTypes = { entity: EntityNode };
 const edgeTypes = { crow: CrowEdge };
 
-// --- MAIN APP COMPONENT ---
-function ERDDesigner() {
+export default function ERDApp() {
   const [nodes, setNodes] = useState([]);
   const [edges, setEdges] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
   const fileInputRef = useRef(null);
-  const { fitView } = useReactFlow();
 
   const onNodeLabelChange = useCallback((id, newLabel) => {
     setNodes((nds) => nds.map((node) => node.id === id ? { ...node, data: { ...node.data, label: newLabel } } : node));
@@ -156,10 +154,21 @@ function ERDDesigner() {
     setEdges((eds) => eds.map((e) => ({ ...e, data: { ...e.data, hideHandles: hide } })));
   };
 
+  // --- NEW: CLEAR ALL FUNCTION ---
+  const clearAll = () => {
+    if (window.confirm("Are you sure you want to clear the entire canvas? This action cannot be undone.")) {
+      setNodes([]);
+      setEdges([]);
+      setSelectedId(null);
+    }
+  };
+
   const saveProject = async () => {
     const projectName = window.prompt("Enter project name:", "my-diagram");
     if (!projectName) return;
+
     toggleHandles(true);
+    
     setTimeout(() => {
       const blob = new Blob([JSON.stringify({ nodes, edges })], { type: 'application/json' });
       const link = document.createElement('a');
@@ -179,11 +188,18 @@ function ERDDesigner() {
         const data = JSON.parse(event.target.result);
         const nodesWithHandlers = data.nodes.map(n => ({
           ...n,
-          data: { ...n.data, onChange: onNodeLabelChange, hideHandles: false }
+          data: { 
+            ...n.data, 
+            onChange: onNodeLabelChange,
+            hideHandles: false 
+          }
         }));
         setNodes(nodesWithHandlers);
         setEdges(data.edges || []);
-      } catch (err) { alert("Invalid file format."); }
+      } catch (err) {
+        console.error("Failed to parse project file:", err);
+        alert("Invalid project file format.");
+      }
     };
     reader.readAsText(file);
     e.target.value = null;
@@ -192,12 +208,20 @@ function ERDDesigner() {
   const exportImage = () => {
     const fileName = window.prompt("Enter image file name:", "erd-diagram");
     if (!fileName) return;
+
     toggleHandles(true);
+
     setTimeout(() => {
       const element = document.querySelector('.react-flow__viewport');
-      toPng(element, { backgroundColor: '#ffffff', quality: 1 }).then((url) => {
+      toPng(element, {
+        backgroundColor: '#ffffff',
+        quality: 1,
+        cacheBust: true,
+      }).then((url) => {
         const a = document.createElement('a');
-        a.download = `${fileName}.png`; a.href = url; a.click();
+        a.download = `${fileName}.png`;
+        a.href = url;
+        a.click();
         toggleHandles(false);
       });
     }, 100);
@@ -208,8 +232,7 @@ function ERDDesigner() {
   return (
     <div style={{ width: '100vw', height: '100vh', display: 'flex', fontFamily: 'sans-serif' }}>
       <div style={{ width: '250px', padding: '20px', background: '#f8fafc', borderRight: '1px solid #ddd', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        <h3 style={{ margin: '0 0 10px 0' }}>ERD Designer</h3>
-        
+        <h3>ERD Designer</h3>
         <button onClick={() => setNodes(n => [...n, { id: `e_${Date.now()}`, type: 'entity', data: { label: 'New Entity', onChange: onNodeLabelChange, hideHandles: false }, position: { x: 100, y: 100 } }])} style={btnStyle('#2563eb')}>+ Add Entity</button>
         
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
@@ -220,22 +243,17 @@ function ERDDesigner() {
         
         <button onClick={exportImage} style={btnStyle('#10b981')}>Export PNG</button>
         
-        {/* ZOOM TO FIT BUTTON */}
-        <button onClick={() => fitView({ padding: 0.2, duration: 800 })} style={btnStyle('#8b5cf6')}>Zoom to Fit</button>
-
-        <button onClick={() => window.confirm("Clear entire canvas?") && (setNodes([]) || setEdges([]))} style={btnStyle('#ef4444')}>Clear All</button>
-
-        {/* TIPS SECTION */}
-        <div style={{ marginTop: '20px', padding: '12px', background: '#fef3c7', borderRadius: '4px', border: '1px solid #f59e0b', fontSize: '12px', color: '#92400e' }}>
-          <strong>💡 Pro Tip:</strong><br/>
-          Hold <strong>Shift</strong> and drag to select multiple entities.
-        </div>
+        {/* CLEAR ALL BUTTON */}
+        <button onClick={clearAll} style={btnStyle('#ef4444', '10px 0 0 0')}>Clear All</button>
 
         {currentEdge && (
           <div style={{ marginTop: '20px', padding: '10px', background: '#fff', border: '1px solid #ddd', borderRadius: '4px' }}>
              <label style={{ fontSize: '12px', fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>Cardinality</label>
              <select style={{ width: '100%', padding: '8px' }} onChange={(e) => handleCardinalityChange(e.target.value)} value={currentEdge.data?.cardinality || '1:1'}>
-               <option value="1:1">1:1</option><option value="1:M">1:M</option><option value="M:1">M:1</option><option value="M:M">M:M</option>
+               <option value="1:1">1:1</option>
+               <option value="1:M">1:M</option>
+               <option value="M:1">M:1</option>
+               <option value="M:M">M:M</option>
              </select>
           </div>
         )}
@@ -257,13 +275,13 @@ function ERDDesigner() {
   );
 }
 
-// Wrap the whole thing in ReactFlowProvider so useReactFlow works
-export default function App() {
-  return (
-    <ReactFlowProvider>
-      <ERDDesigner />
-    </ReactFlowProvider>
-  );
-}
-
-const btnStyle = (bg) => ({ padding: '10px', background: bg, color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' });
+const btnStyle = (bg, margin = '0') => ({ 
+  padding: '10px', 
+  background: bg, 
+  color: 'white', 
+  border: 'none', 
+  borderRadius: '4px', 
+  cursor: 'pointer', 
+  fontWeight: 'bold',
+  marginTop: margin.split(' ')[0] // Simple margin-top support
+});
