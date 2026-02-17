@@ -1,70 +1,37 @@
-# Getting Started with Create React App
+# ERD Designer 📊
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A specialized React-based tool for designing Entity Relationship Diagrams (ERDs) with precision and ease. This application allows users to model database structures using professional Crow's foot notation.
 
-## Available Scripts
+## 🚀 Key Features
 
-In the project directory, you can run:
+### 📐 Precise Crow's Foot Notation
+* **Flush Geometry:** Custom-calculated trident (fork) connectors that sit perfectly flush against entity borders, regardless of the connection angle.
+* **Dynamic Cardinality:** Support for standard ERD relationships, including **1:1**, **1:M**, **M:1**, and **M:M**.
+* **Smart Connectors:** Unit-vector-based pathing ensures connectors stay aligned even when entities are moved or tilted.
 
-### `npm start`
+### 🏢 Entity Management
+* **Custom Entity Nodes:** Create and label database entities with an intuitive, on-node text interface.
+* **Canvas Control:** * **Clear All:** Instantly wipe the canvas clean with a single click (includes a safety confirmation dialog).
+* **Keyboard Shortcuts:**
+    * `Delete` / `Backspace`: Remove selected entities or relationships.
+    * `Ctrl + D` (or `Cmd + D`): Quickly duplicate selected entity nodes.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 📁 Project & File Handling
+* **Project Persistence:** Save your entire workspace as a `.erd` project file to resume work later.
+* **Named Exports:** Prompt-based naming for both project files and image exports.
+* **High-Quality PNG Export:** Generate professional-grade diagrams with a solid white background (not transparent).
+* **Professional Mode:** Automatic suppression of connection handles during save/export for a cleaner final look.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 🛠️ User Interface
+* **Interactive Sidebar:** Dedicated toolbar for adding entities, managing files, clearing the workspace, and adjusting relationship cardinality.
+* **Fluid Canvas:** Built on React Flow, providing a smooth panning, zooming, and drag-and-drop experience.
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🛠️ Built With
 
-### `npm run build`
+* [React](https://reactjs.org/) - UI Framework
+* [React Flow](https://reactflow.dev/) - Powerful diagramming library
+* [html-to-image](https://www.npmjs.com/package/html-to-image) - High-quality image generation
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---

@@ -9,7 +9,6 @@ import { toPng } from 'html-to-image';
 // --- CUSTOM NODE ---
 const EntityNode = ({ id, data, selected }) => {
   const handleSize = 8;
-  // If data.hideHandles is true, we set opacity to 0 or display to none
   const hStyle = { 
     width: handleSize, height: handleSize, background: '#444', 
     border: '1px solid #fff', zIndex: 10,
@@ -150,27 +149,33 @@ export default function ERDApp() {
     setEdges((eds) => addEdge(newEdge, eds));
   }, []);
 
-  // --- HELPER TO TOGGLE HANDLES ---
   const toggleHandles = (hide) => {
     setNodes((nds) => nds.map((n) => ({ ...n, data: { ...n.data, hideHandles: hide } })));
     setEdges((eds) => eds.map((e) => ({ ...e, data: { ...e.data, hideHandles: hide } })));
+  };
+
+  // --- NEW: CLEAR ALL FUNCTION ---
+  const clearAll = () => {
+    if (window.confirm("Are you sure you want to clear the entire canvas? This action cannot be undone.")) {
+      setNodes([]);
+      setEdges([]);
+      setSelectedId(null);
+    }
   };
 
   const saveProject = async () => {
     const projectName = window.prompt("Enter project name:", "my-diagram");
     if (!projectName) return;
 
-    // Temporarily hide handles
     toggleHandles(true);
     
-    // Use a small timeout to ensure React finishes rendering the hidden state
     setTimeout(() => {
       const blob = new Blob([JSON.stringify({ nodes, edges })], { type: 'application/json' });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
       link.download = `${projectName}.erd`;
       link.click();
-      toggleHandles(false); // Restore
+      toggleHandles(false); 
     }, 50);
   };
 
@@ -179,12 +184,25 @@ export default function ERDApp() {
     if (!file) return;
     const reader = new FileReader();
     reader.onload = (event) => {
-      const data = JSON.parse(event.target.result);
-      const nodesWithHandlers = data.nodes.map(n => ({ ...n, data: { ...n.data, onChange: onNodeLabelChange, hideHandles: false } }));
-      setNodes(nodesWithHandlers);
-      setEdges(data.edges.map(e => ({ ...e, data: { ...e.data, hideHandles: false } })));
+      try {
+        const data = JSON.parse(event.target.result);
+        const nodesWithHandlers = data.nodes.map(n => ({
+          ...n,
+          data: { 
+            ...n.data, 
+            onChange: onNodeLabelChange,
+            hideHandles: false 
+          }
+        }));
+        setNodes(nodesWithHandlers);
+        setEdges(data.edges || []);
+      } catch (err) {
+        console.error("Failed to parse project file:", err);
+        alert("Invalid project file format.");
+      }
     };
     reader.readAsText(file);
+    e.target.value = null;
   };
 
   const exportImage = () => {
@@ -224,6 +242,9 @@ export default function ERDApp() {
         <input type="file" ref={fileInputRef} onChange={openProject} style={{ display: 'none' }} accept=".erd" />
         
         <button onClick={exportImage} style={btnStyle('#10b981')}>Export PNG</button>
+        
+        {/* CLEAR ALL BUTTON */}
+        <button onClick={clearAll} style={btnStyle('#ef4444', '10px 0 0 0')}>Clear All</button>
 
         {currentEdge && (
           <div style={{ marginTop: '20px', padding: '10px', background: '#fff', border: '1px solid #ddd', borderRadius: '4px' }}>
@@ -254,4 +275,13 @@ export default function ERDApp() {
   );
 }
 
-const btnStyle = (bg) => ({ padding: '10px', background: bg, color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' });
+const btnStyle = (bg, margin = '0') => ({ 
+  padding: '10px', 
+  background: bg, 
+  color: 'white', 
+  border: 'none', 
+  borderRadius: '4px', 
+  cursor: 'pointer', 
+  fontWeight: 'bold',
+  marginTop: margin.split(' ')[0] // Simple margin-top support
+});
