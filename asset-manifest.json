@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/erd-designer/static/css/main.687ac7b6.css",
+    "main.js": "/erd-designer/static/js/main.17ff1eb2.js",
+    "static/js/453.87761067.chunk.js": "/erd-designer/static/js/453.87761067.chunk.js",
+    "index.html": "/erd-designer/index.html",
+    "main.687ac7b6.css.map": "/erd-designer/static/css/main.687ac7b6.css.map",
+    "main.17ff1eb2.js.map": "/erd-designer/static/js/main.17ff1eb2.js.map",
+    "453.87761067.chunk.js.map": "/erd-designer/static/js/453.87761067.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.687ac7b6.css",
+    "static/js/main.17ff1eb2.js"
+  ]
+}
